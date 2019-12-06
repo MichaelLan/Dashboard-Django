@@ -1,4 +1,8 @@
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
+
+from django.utils.text import slugify
 
 # Create your models here.
 class Proyecto(models.Model):
@@ -10,7 +14,7 @@ class Proyecto(models.Model):
     perfil_3 = models.IntegerField(verbose_name='Perfil 3', default=0)
     perfil_4 = models.IntegerField(verbose_name='Perfil 4', default=0)
     perfil_5 = models.IntegerField(verbose_name='Perfil 5', default=0)
-    slug_localidad = models.SlugField(verbose_name='Slug Localidad', null=True)
+    slug_localidad = models.SlugField(verbose_name='Slug Localidad', null=False)
     created = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de creación')
     updated = models.DateTimeField(auto_now=True, verbose_name='Fecha de edición')
 
@@ -20,3 +24,8 @@ class Proyecto(models.Model):
 
     def __str__(self):
         return self.proyecto
+
+
+@receiver(pre_save, sender=Proyecto)
+def assign_slug(sender, instance, **kwargs):
+    instance.slug_localidad = slugify(instance.localidad)

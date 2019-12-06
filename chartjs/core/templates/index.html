@@ -1,69 +1,54 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Dashboard with Django and ChartJS {% endblock title %}
 
-    {% load staticfiles %}
 
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <script>
+{% block content %}
+    
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="shadow  card rounded">
+                <div class="card-body">
+                    <div class="input-group mb-1">
+                        <input class="form-control" type="text" id="get_id" value="1">
         
-    </script>
-    <title>ChartJS</title>
-</head>
-<body>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="input-group mb-1">
-                            <input class="form-control" type="text" id="get_id" value="1">
-            
-                            <div class="input-group-append">
-                                <button id="btn-get-data" class="btn btn-primary">Buscar</button>
-                            </div>
+                        <div class="input-group-append">
+                            <button id="btn-get-data" class="btn btn-primary">Buscar</button>
                         </div>
-                        
-                        <canvas id="myChart" width="300" height="150" class="chartjs-render-monitor"></canvas>
                     </div>
-                </div>
-            </div>
-                
-            <div id="" class="col-md-5">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="input-group mb-1">
-                        <!-- TODO: reemplazar por un select-->
-                            <input class="form-control" type="text" id="get_localidad" value="Suba">
-            
-                            <div class="input-group-append">
-                                <button id="btn-get-localidad" class="btn btn-primary">Buscar</button>
-                            </div>
-                        </div>
-                        
-                        <canvas id="chartLocalidad" width="300" height="150" class="chartjs-render-monitor"></canvas>
-                    </div>
+                    
+                    <canvas id="myChart" width="300" height="150" class="chartjs-render-monitor"></canvas>
                 </div>
             </div>
         </div>
-
-    <select name="select">
-        {% for localidad in localidades %}
-            <option value="{{localidad|slugify}}" {% if localidad == 'Suba' %} selected {%endif%}>{{localidad}}</option> 
-            {% endfor %}
-    </select>
-
+            
+        <div id="" class="col-md-5">
+            <div class="shadow card rounded">
+                <div class="card-body">
+                    <div class="input-group mb-1">
+                        <select name="select-localidad" class="form-control" id="get_localidad">
+                            {% for localidad in localidades %}
+                                <option value="{{localidad|slugify}}" {% if localidad == 'Suba' %} selected {%endif%}>{{localidad}}</option> 
+                                {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <canvas id="chartLocalidad" width="300" height="150" class="chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
-   
+    <a href="{% url 'core:newproject' %}" class="btn btn-primary mt-3">Crear nuevo proyecto</a>
 
-    <!-- Scripts -->
+</div>
+
+{% endblock content %}  
+
+<!-- Scripts -->
+
+{% block scripts %}
     <script src="{% static 'js/index.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-</body>
-</html>
+{% endblock scripts %}
+    

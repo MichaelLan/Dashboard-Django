@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
 from django.http import JsonResponse
-from django.core import serializers
-from django.http import HttpResponse
 from django.db.models import Sum
+from django.urls import reverse_lazy
 
 from django.shortcuts import get_object_or_404
 
 from .models import Proyecto
+from .forms import ProyectoForm
 
 
 # Create your views here.
@@ -25,19 +25,22 @@ def getDataId(request, id):
     # datasets = {'name': 'My First dataset',
     #         'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     #         'data': [40, 10, 5, 2, 20, 30, 45]}
+    if Proyecto.objects.filter(id=id).exists():
+        p1 = Proyecto.objects.filter(id=id)[0].perfil_1
+        p2 = Proyecto.objects.filter(id=id)[0].perfil_2
+        p3 = Proyecto.objects.filter(id=id)[0].perfil_3
+        p4 = Proyecto.objects.filter(id=id)[0].perfil_4
+        p5 = Proyecto.objects.filter(id=id)[0].perfil_5
+        loc = Proyecto.objects.filter(id=id)[0].localidad
+        pro = Proyecto.objects.filter(id=id)[0].proyecto
 
-    p1 = Proyecto.objects.filter(id=id)[0].perfil_1
-    p2 = Proyecto.objects.filter(id=id)[0].perfil_2
-    p3 = Proyecto.objects.filter(id=id)[0].perfil_3
-    p4 = Proyecto.objects.filter(id=id)[0].perfil_4
-    p5 = Proyecto.objects.filter(id=id)[0].perfil_5
-    loc = Proyecto.objects.filter(id=id)[0].localidad
-    pro = Proyecto.objects.filter(id=id)[0].proyecto
+        labels = ['perfil 1', 'perfil 2', 'perfil 3', 'perfil 4', 'perfil 5']
+        datasets = {'localidad':loc, 'proyecto':pro, 'labels': labels ,'data':[p1, p2, p3, p4, p5]}
 
-    labels = ['perfil 1', 'perfil 2', 'perfil 3', 'perfil 4', 'perfil 5']
+    else:
+        labels = ['None', 'None', 'None', 'None', 'None']
+        datasets = {'localidad':None, 'proyecto':'Proyecto No Existe', 'labels': labels ,'data':[0, 0, 0, 0, 0]}
 
-    datasets = {'localidad':loc, 'proyecto':pro, 'labels': labels ,'data':[p1, p2, p3, p4, p5]}
-        
     return JsonResponse([datasets], safe=False)
 
 
@@ -56,3 +59,11 @@ def getDataLocalidad(request, slug):
     datasets = {'localidad':loc, 'labels': labels, 'data': [v_p1, v_p2, v_p3, v_p4, v_p5]}
 
     return JsonResponse([datasets], safe=False)
+
+
+
+class NewProjectView(CreateView):
+    model = Proyecto
+    form_class = ProyectoForm
+    template_name = 'create_project.html'
+    success_url = reverse_lazy('core:home')

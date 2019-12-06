@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Creating a new project {% endblock title %}
+{% block content %}
+
+{% block css %} <link href="https://fonts.googleapis.com/css?family=Kaushan+Script&display=swap" rel="stylesheet"> {% endblock css %}
+
+<main role="main">
+    <div class="container">
+      <div class="row mt-3 mb-5">
+        <div class="col-md-10 mx-auto">
+            <h2 class="text-center text-decoration" id="title-create-project"> Nuevo Proyecto </h2>
+            <form action="" method="post">{% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6"> {{ form.localidad}} </div>
+                    <div class="col-md-6"> {{ form.tipo_proyecto}} </div>                                        
+                </div>
+                <div class="row">
+                    <div class="col-md-12">{{ form.proyecto }}</div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 1</h6>
+                        {{form.perfil_1}}
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 2</h6>
+                        {{form.perfil_2}}
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 3</h6>
+                        {{form.perfil_3}}
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 4</h6>
+                        {{form.perfil_4}}
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 5</h6>
+                        {{form.perfil_5}}
+                    </div>
+                </div>                      
+
+                  <div class="text-center">
+                    <input type="submit" class="btn btn-primary btn-block mt-3" value="Crear proyecto" />
+                  </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </main>    
+{% endblock content %}
+    
+    

@@ -10,21 +10,8 @@ from .models import Proyecto
 from .forms import ProyectoForm
 
 
-# Create your views here.
-class graphPageView(TemplateView):
-    template_name = 'index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['localidades'] = set([x.localidad for x in Proyecto.objects.all()])
-        return context
-
-
 def getDataId(request, id):
-    # labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-    # datasets = {'name': 'My First dataset',
-    #         'labels': ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    #         'data': [40, 10, 5, 2, 20, 30, 45]}
+
     if Proyecto.objects.filter(id=id).exists():
         p1 = Proyecto.objects.filter(id=id)[0].perfil_1
         p2 = Proyecto.objects.filter(id=id)[0].perfil_2
@@ -61,9 +48,29 @@ def getDataLocalidad(request, slug):
     return JsonResponse([datasets], safe=False)
 
 
+class ProjectView(TemplateView):
+
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectView, self).get_context_data(**kwargs)
+        context['localidades'] = set([x.localidad for x in Proyecto.objects.all()])
+        return context
+
 
 class NewProjectView(CreateView):
     model = Proyecto
     form_class = ProyectoForm
     template_name = 'create_project.html'
     success_url = reverse_lazy('core:home')
+
+
+class NewProjectViewTest(CreateView):
+    model = Proyecto
+    form_class = ProyectoForm
+    template_name = 'create_project_2.html'
+    success_url = reverse_lazy('core:home')
+
+
+
+    

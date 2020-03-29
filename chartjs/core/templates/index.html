@@ -6,8 +6,9 @@
 {% block content %}
     
 <div class="container">
-    <div class="row">
-        <div class="col-md-5">
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-5 mt-3">
             <div class="shadow  card rounded">
                 <div class="card-body">
                     <div class="input-group mb-1">
@@ -23,14 +24,14 @@
             </div>
         </div>
             
-        <div id="" class="col-md-5">
+        <div id="" class="col-5 mt-3">
             <div class="shadow card rounded">
                 <div class="card-body">
                     <div class="input-group mb-1">
                         <select name="select-localidad" class="form-control" id="get_localidad">
                             {% for localidad in localidades %}
                                 <option value="{{localidad|slugify}}" {% if localidad == 'Suba' %} selected {%endif%}>{{localidad}}</option> 
-                                {% endfor %}
+                            {% endfor %}
                         </select>
                     </div>
                     
@@ -38,17 +39,31 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <a href="{% url 'core:newproject' %}" class="btn btn-primary mt-3">Crear nuevo proyecto</a>
+        <div class="col-3 mt-3">
+            <a href="{% url 'core:createProject' %}" class="btn btn-primary">Crear nuevo proyecto</a>
+            <button class="bt btn-primary" onclick= "open_modal_creation('{% url 'core:createProject2' %}')">Crear nuevo modal</button>
+        </div>
+
+        <div class="modal fade" id="creation" role="dialog">
+
+        </div>
+
+    </div>
 
 </div>
 
 {% endblock content %}  
 
 <!-- Scripts -->
-
 {% block scripts %}
-    <script src="{% static 'js/index.js' %}"></script>
+<script src="{% static 'js/index.js' %}"></script>
+<script type="text/javascript">
+    var $ = jQuery.noConflict()
+    function open_modal_creation(url){
+        $('#creation').load(url, function(){$(this).modal('show')})
+        // load(url, function(){$(this).modal('show')})
+    }
+</script>
 {% endblock scripts %}
     

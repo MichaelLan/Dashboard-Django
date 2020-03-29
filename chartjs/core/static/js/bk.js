@@ -2,6 +2,8 @@ const mainWeb = 'http://127.0.0.1:8000'
 let btnBuscarId = document.getElementById('btn-get-data')
 let btnBuscarLocalidad = document.getElementById('btn-get-localidad')
 let selectLocalidad = document.getElementById('get_localidad')
+let pressEnterId = document.getElementById('get_id')
+
 
 // Conexión con servidor
 let req = new XMLHttpRequest();
@@ -47,9 +49,21 @@ document.addEventListener('DOMContentLoaded', function(){
                 },
             
                 options: {
-                    "scales":{
-                        "yAxes":[{"ticks":{"beginAtZero":true}}]
-                    }
+                    scales:{
+                        yAxes:[{
+                            ticks:{"beginAtZero":true},
+                            gridLines: {
+                                display: true,
+                            },
+                        }],
+
+                        xAxes:[{
+                            gridLines: {
+                                display: true,
+                            },
+                        }],
+                    },
+
                 },
             }
             
@@ -64,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function(){
             
             window.ChartLocalidad = document.getElementById('chartLocalidad').getContext('2d')
             window.dataLocalidad = {
-                type: 'pie',
+                type: 'doughnut',
                 
                 data: {
                     labels: datosLocalidad.labels,
@@ -80,7 +94,15 @@ document.addEventListener('DOMContentLoaded', function(){
                     }]
                 },
             
-                options: { },
+                options: {
+                    legend: {
+                        display: true,
+                        position: 'left',
+                        labels: {
+                            padding: 20
+                        },
+                    },
+                },
             }
 
             window.myChartLocalidad = new Chart(ChartLocalidad, dataLocalidad)
@@ -91,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 btnBuscarId.addEventListener('click', () => {
     
-    id = document.getElementById('get_id')
     url = `${mainWeb}/core/getdata/${parseInt(id.value)}/`
 
     req.open('GET', url)
@@ -110,10 +131,8 @@ btnBuscarId.addEventListener('click', () => {
     }
 })
 
-
 selectLocalidad.addEventListener('change', () => {
     
-    localidad = document.getElementById('get_localidad')
     url  = `${mainWeb}/core/getdataLocalidad/${localidad.value}/`
     
     req2.open('GET', url)
@@ -131,22 +150,24 @@ selectLocalidad.addEventListener('change', () => {
     }
 })
 
-function slugify(str) {
-    str = str.replace(/^\s+|\s+$/g, ""); // trim
-    str = str.toLowerCase();
-  
-    // remove accents, swap ñ for n, etc
-    var from = "åàáãäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to = "aaaaaaeeeeiiiioooouuuunc------";
-  
-    for (var i = 0, l = from.length; i < l; i++) {
-      str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
+pressEnterId.addEventListener('keypress', (e) => {
+    if (e.keyCode == 13 & pressEnterId.value !== '') {
+        url = `${mainWeb}/core/getdata/${parseInt(id.value)}/`
+    
+        req.open('GET', url)
+        req.send()
+    
+        req.onreadystatechange = function () {
+            if(req.readyState === XMLHttpRequest.DONE && req.status === 200){
+                newData = JSON.parse(req.response)
+                newData = newData[0]
+                
+                window.dataProject.data.datasets[0].data = newData.data
+                window.dataProject.data.datasets[0].label = newData.proyecto
+    
+                window.myChart.update()
+            }
+        }
+    
     }
-  
-    str = str
-      .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
-      .replace(/\s+/g, "-") // collapse whitespace and replace by -
-      .replace(/-+/g, "-"); // collapse dashes
-  
-    return str;
-  }
+})

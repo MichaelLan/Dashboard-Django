@@ -1,0 +1,47 @@
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Nuevo Proyecto</h2>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form action="" method="post">{% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6"> {{ form.localidad}} </div>
+                    <div class="col-md-6"> {{ form.tipo_proyecto}} </div>                                        
+                </div>
+                <div class="row">
+                    <div class="col-md-12">{{ form.proyecto }}</div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 1</h6>
+                        {{form.perfil_1}}
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 2</h6>
+                        {{form.perfil_2}}
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 3</h6>
+                        {{form.perfil_3}}
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 4</h6>
+                        {{form.perfil_4}}
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <h6 class="text-muted text-center">Perfil 5</h6>
+                        {{form.perfil_5}}
+                    </div>
+                </div>                      
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+            <button class="btn btn-primary" type="submit" data-dismiss="modal">Crear Proyecto</button>
+        </div>
+    </div>    
+</div>

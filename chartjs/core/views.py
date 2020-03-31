@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views.generic import TemplateView, CreateView
 from django.http import JsonResponse
 from django.db.models import Sum
@@ -10,19 +9,19 @@ from .models import Proyecto
 from .forms import ProyectoForm
 
 
-def getDataId(request, id):
+def get_data_id(request, id):
 
     if Proyecto.objects.filter(id=id).exists():
-        p1 = Proyecto.objects.filter(id=id)[0].perfil_1
-        p2 = Proyecto.objects.filter(id=id)[0].perfil_2
-        p3 = Proyecto.objects.filter(id=id)[0].perfil_3
-        p4 = Proyecto.objects.filter(id=id)[0].perfil_4
-        p5 = Proyecto.objects.filter(id=id)[0].perfil_5
+        p_1 = Proyecto.objects.filter(id=id)[0].perfil_1
+        p_2 = Proyecto.objects.filter(id=id)[0].perfil_2
+        p_3 = Proyecto.objects.filter(id=id)[0].perfil_3
+        p_4 = Proyecto.objects.filter(id=id)[0].perfil_4
+        p_5 = Proyecto.objects.filter(id=id)[0].perfil_5
         loc = Proyecto.objects.filter(id=id)[0].localidad
         pro = Proyecto.objects.filter(id=id)[0].proyecto
 
         labels = ['perfil 1', 'perfil 2', 'perfil 3', 'perfil 4', 'perfil 5']
-        datasets = {'localidad':loc, 'proyecto':pro, 'labels': labels ,'data':[p1, p2, p3, p4, p5]}
+        datasets = {'localidad':loc, 'proyecto':pro, 'labels': labels, 'data':[p_1, p_2, p_3, p_4, p_5]}
 
     else:
         labels = ['None', 'None', 'None', 'None', 'None']
@@ -31,7 +30,7 @@ def getDataId(request, id):
     return JsonResponse([datasets], safe=False)
 
 
-def getDataLocalidad(request, slug):
+def get_data_localidad(request, slug):
 
     loc = Proyecto.objects.filter(slug_localidad=slug).first().localidad
     labels = ['perfil 1', 'perfil 2', 'perfil 3', 'perfil 4', 'perfil 5']
@@ -61,14 +60,7 @@ class ProjectView(TemplateView):
 class NewProjectView(CreateView):
     model = Proyecto
     form_class = ProyectoForm
-    template_name = 'create_project.html'
-    success_url = reverse_lazy('core:home')
-
-
-class NewProjectViewTest(CreateView):
-    model = Proyecto
-    form_class = ProyectoForm
-    template_name = 'create_project_2.html'
+    template_name = 'create.html'
     success_url = reverse_lazy('core:home')
 
 

@@ -4,7 +4,7 @@
 
 
 {% block content %}
-    
+
 <div class="container">
     <div class="row d-flex justify-content-center">
 
@@ -41,8 +41,7 @@
         </div>
 
         <div class="col-3 mt-3">
-            <a href="{% url 'core:createProject' %}" class="btn btn-primary">Crear nuevo proyecto</a>
-            <button class="bt btn-primary" onclick= "open_modal_creation('{% url 'core:createProject2' %}')">Crear nuevo modal</button>
+            <button class="bt btn-primary" onclick= "open_modal_creation('{% url 'core:cp' %}')">Nuevo proyecto</button>
         </div>
 
         <div class="modal fade" id="creation" role="dialog">
@@ -62,8 +61,7 @@
     var $ = jQuery.noConflict()
     function open_modal_creation(url){
         $('#creation').load(url, function(){$(this).modal('show')})
-        // load(url, function(){$(this).modal('show')})
     }
+
 </script>
 {% endblock scripts %}
-    

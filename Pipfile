@@ -9,6 +9,7 @@ verify_ssl = true
 django = "*"
 pipfile = "*"
 pylint = "*"
+pylint-django = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"
